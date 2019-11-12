@@ -1,0 +1,5 @@
+*.svg
+*.import
+builds/
+.import/
+
