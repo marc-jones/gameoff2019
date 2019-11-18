@@ -1,0 +1,58 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://assets/scripts/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/gnat_idle/gnat_idle0.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/gnat_idle/gnat_idle1.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/gnat_hit/gnat_hit0.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/gnat_hit/gnat_hit1.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/gnat_hit/gnat_hit2.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/gnat_hit/gnat_hit3.png" type="Texture" id=7]
+[ext_resource path="res://assets/images/gnat_hit/gnat_hit4.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/gnat_hit/gnat_hit5.png" type="Texture" id=9]
+[ext_resource path="res://assets/images/gnat_walk/gnat_walk0.png" type="Texture" id=10]
+[ext_resource path="res://assets/images/gnat_walk/gnat_walk1.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/gnat_walk/gnat_walk2.png" type="Texture" id=12]
+[ext_resource path="res://assets/images/gnat_walk/gnat_walk3.png" type="Texture" id=13]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 12.2943
+height = 4.42501
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "idle",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "hit",
+"speed": 6.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "walk",
+"speed": 4.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 23.5911, 9.98795 )
+
+[node name="Enemy" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "walk"
+playing = true
+
+[node name="HitTrigger" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitTrigger"]
+shape = SubResource( 3 )

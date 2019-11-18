@@ -21,7 +21,6 @@ func _draw():
 	if current_length > max_length:
 		new_to = from + (from.direction_to(to) * max_length)
 	var line_thickness = min(1.0, current_length / max_length)*max_thickness
-#	draw_line(from, new_to, Color.red, line_thickness)
 	draw_line(player_position, player_position + (new_to - from), Color.red, line_thickness)
 
 func initialise(point):
