@@ -23,12 +23,21 @@ run/main_scene="res://assets/scenes/SceneManager.tscn"
 window/size/width=320
 window/size/height=480
 window/size/resizable=false
+window/handheld/orientation="portrait"
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[layer_names]
+
+2d_physics/layer_1="LevelBoundaries"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemies"
+2d_physics/layer_4="Trail"
+2d_physics/layer_5="Bullet"
 
 [physics]
 

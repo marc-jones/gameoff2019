@@ -1,7 +1,7 @@
 extends StaticBody2D
 
 var point_list = PoolVector2Array()
-var max_length = 400.0
+var max_length = 500.0
 
 var projection_point : Vector2
 
@@ -17,6 +17,7 @@ var polygon_width = 2
 signal shape_completed
 
 func _ready():
+	add_to_group("trail")
 	sprite = get_node("TrailSprite")
 	collision_poly = get_node("CollisionPolygon2D")
 

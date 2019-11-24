@@ -1,12 +1,12 @@
 extends Sprite
 
 var current_point_list : PoolVector2Array
-var current_colour = Color.white
+var current_colour = Color("#f9f9f9")
 var current_width = 4
 
 var projecting = false
 var projection_point_list : PoolVector2Array
-var projection_colour = Color.black
+var projection_colour = Color("#656664")
 var projection_width = 5
 
 func _ready():
