@@ -18,7 +18,7 @@ var invert_controls = false
 
 signal score_change
 
-var current_level = 0
+var current_level = 1
 var EnemyDirectorTemplate = load("res://assets/scripts/EnemyDirector.gd")
 var enemy_director
 

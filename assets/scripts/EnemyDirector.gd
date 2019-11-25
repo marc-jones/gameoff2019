@@ -6,30 +6,61 @@ var gnat_attack_offset_distance = 30
 var attack_angle_vector = Vector2(1, 0)
 var idle_start_angle_vector = Vector2(0, -1)
 
+var gnat_difficulty_log_scale = 1.5
+
 const GnatTemplate = preload("res://assets/scenes/Gnat.tscn")
 const MothTemplate = preload("res://assets/scenes/Moth.tscn")
+
+var margin_h = 40
+var margin_v = 80
+var min_enemy_spacing = 60
 
 func _init():
 	pass
 
 func get_enemy_vector(current_level):
-	var starting_midpoint = get_viewport_rect().size
-	starting_midpoint.y /= 3
-	starting_midpoint.x /= 2
-	var number_of_gnats = min(6, current_level)
-	var offset_positions = return_gnat_offset_positions(number_of_gnats)
+	# Curve equations
+	var number_of_gnats = floor(log(current_level+1) / log(gnat_difficulty_log_scale))
+	var number_of_moths = min(floor(current_level / 4), 4)
+	# Curve equations end
 	var enemy_vector = []
+	var viewport_dims = get_viewport_rect().size
+	var max_enemies_per_row = floor((viewport_dims.x - (2*margin_h)) / min_enemy_spacing) + 1
+	var enemy_spacing = int((viewport_dims.x - (2*margin_h)) / (max_enemies_per_row - 1))
+	var current_row = 0
+	var current_col = 0
+	for idx in range(number_of_moths):
+		var starting_x_pos = margin_h
+		var remaining_enemies = number_of_moths - (current_row*max_enemies_per_row)
+		if remaining_enemies < max_enemies_per_row:
+			starting_x_pos = (viewport_dims.x - enemy_spacing*(remaining_enemies-1))/2
+		var moth = MothTemplate.instance()
+		moth.position.x = starting_x_pos + (current_col*enemy_spacing)
+		moth.position.y = margin_v + (current_row*enemy_spacing)
+		enemy_vector.append(moth)
+		current_col += 1
+		if (max_enemies_per_row - 1) < current_col:
+			current_col = 0
+			current_row += 1
+	current_row += 1
+	current_col = 0
+	var offset_positions = return_gnat_offset_positions(number_of_gnats)
 	for idx in range(number_of_gnats):
+		var starting_x_pos = margin_h
+		var remaining_enemies = number_of_gnats - (
+			(current_row - ceil(number_of_gnats/max_enemies_per_row))*max_enemies_per_row)
+		if remaining_enemies < max_enemies_per_row:
+			starting_x_pos = (viewport_dims.x - enemy_spacing*(remaining_enemies-1))/2
 		var gnat = GnatTemplate.instance()
 		var offset = offset_positions[idx]
-		gnat.position = starting_midpoint + offset
 		gnat.set_target_offset(offset)
+		gnat.position.x = starting_x_pos + (current_col*enemy_spacing)
+		gnat.position.y = margin_v + (current_row*enemy_spacing)
 		enemy_vector.append(gnat)
-	# DEBUG
-	var moth = MothTemplate.instance()
-	moth.position = starting_midpoint
-	moth.position.y /= 1.5
-	enemy_vector.append(moth)
+		current_col += 1
+		if (max_enemies_per_row - 1) < current_col:
+			current_col = 0
+			current_row += 1
 	return(enemy_vector)
 
 func return_gnat_offset_positions(enemy_number):

@@ -16,6 +16,9 @@ var polygon_width = 2
 
 signal shape_completed
 
+# How different does a new point have to be to add a new one
+var add_point_threshold = 10
+
 func _ready():
 	add_to_group("trail")
 	sprite = get_node("TrailSprite")
@@ -55,7 +58,7 @@ func length_check(input_point_list):
 	return(input_point_list)
 
 func add_point(point:Vector2):
-	if not (not len(point_list) == 0 and point_list[0] == point):
+	if not (not len(point_list) == 0 and point_list[0].distance_to(point) < add_point_threshold):
 		point_list.insert(0, point)
 		point_list = length_check(point_list)
 

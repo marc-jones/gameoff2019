@@ -1,7 +1,9 @@
 extends KinematicBody2D
 
-var speed = 80
+var speed = 150
 var velocity : Vector2
+
+var speed_up_amount = 30
 
 var reflected_bullet = preload("res://assets/images/bullet_reflected.png")
 
@@ -9,13 +11,14 @@ signal enemy_hit
 
 func _ready():
 	add_to_group('enemy')
+	add_to_group('bullet')
 
 func _enter_tree():
 	var game_manager = get_tree().get_root().get_node("SceneManager/GameManager")
 	var player = game_manager.get_node("PlayArea/Player")
 	var _discard = game_manager.get_node("PlayArea/KillZone").connect(
 		"body_entered", self, "enter_killzone_callback")
-	$VisibilityNotifier2D.connect("screen_exited", self, "destroy")
+	_discard = $VisibilityNotifier2D.connect("screen_exited", self, "destroy")
 	_discard = connect("enemy_hit", player, "register_hit")
 
 func _physics_process(delta):
@@ -24,9 +27,10 @@ func _physics_process(delta):
 	if not collision == null:
 		if collision.collider.is_in_group("trail"):
 			convert_to_reflected_bullet()
-			velocity = velocity.bounce(collision.normal)
+			speed += speed_up_amount
+			velocity = velocity.bounce(collision.normal).normalized()*speed
 		if collision.collider.is_in_group("enemy"):
-			collision.collider.enter_killzone_callback(collision.collider)
+			collision.collider.register_shot()
 			destroy()
 		if collision.collider.is_in_group("player"):
 			emit_signal("enemy_hit")

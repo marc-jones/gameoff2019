@@ -25,13 +25,20 @@ var flash_duration = 1
 var current_flash_duration = 0
 var flashing = false
 
+var combo_regen_amount = 10
+
 var movement_direction : Vector2
+
+var deceleration_rate = 1.5
+
+var trail
 
 func _ready():
 	add_to_group("player")
 	drag_indicator = get_node("../DragIndicator")
 
 func _enter_tree():
+	trail = get_node("../Trail")
 	health_change(100)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -46,8 +53,17 @@ func _physics_process(delta):
 	if position.distance_to(current_target) > snap_distance:
 		$AnimatedSprite.play("jumping")
 		current_rotation = position.angle_to_point(current_target) + PI/2
-		var _discard = move_and_slide(position.direction_to(current_target)*
-			position.distance_to(current_target)*current_speed)
+		var collision = move_and_collide(position.direction_to(current_target)*
+			position.distance_to(current_target)*current_speed*delta)
+		if collision:
+			if collision.collider.is_in_group("bullet"):
+				register_hit()
+				collision.collider.destroy()
+			else:
+				trail.add_point(position)
+				movement_direction = movement_direction.slide(collision.normal).normalized()
+				current_target = position + (movement_direction *
+					position.distance_to(current_target) / deceleration_rate)
 		emit_signal("moved", position)
 		moving = true
 	else:
@@ -85,6 +101,7 @@ func teleport(point):
 	current_target = point
 
 func move_to(point):
+	movement_direction = position.direction_to(point)
 	current_target = point
 
 func register_hit():
@@ -95,6 +112,7 @@ func register_hit():
 
 func health_change(add_value):
 	health += add_value
+	health = clamp(health, 0, 100)
 	emit_signal("player_health_change", health)
 
 func incapacitate(length):
@@ -113,3 +131,6 @@ func manage_flashing(delta):
 			flashing = false
 			current_flash_duration = 0
 			$AnimatedSprite.modulate = Color(1, 1, 1, 1)
+
+func combo_regen():
+	health_change(combo_regen_amount)

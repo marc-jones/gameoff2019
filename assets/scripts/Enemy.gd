@@ -8,9 +8,17 @@ var score = 0
 
 signal enemy_died
 
+var flash_interval = 0.1
+var flash_duration = 0.5
+var current_flash_duration = 0
+var flashing = false
+
 func _ready():
 	add_to_group('enemy')
 	set_walk_animation()
+
+func _process(delta):
+	manage_flashing(delta)
 
 func _enter_tree():
 	var game_manager = get_tree().get_root().get_node("SceneManager/GameManager")
@@ -31,7 +39,6 @@ func update_target(player_position):
 
 func enter_killzone_callback(body):
 	if body == self:
-		emit_signal("enemy_died", score)
 		kill()
 
 func set_idle_animation():
@@ -46,4 +53,18 @@ func animation_finished_callback():
 	pass
 
 func kill():
+	emit_signal("enemy_died", score)
 	queue_free()
+
+func manage_flashing(delta):
+	if flashing:
+		current_flash_duration += delta
+		if int(floor(current_flash_duration / flash_interval)) % 2 == 0:
+			$AnimatedSprite.modulate = Color(10, 10, 10, 10)
+		else:
+			$AnimatedSprite.modulate = Color(1, 1, 1, 1)
+		if flash_duration < current_flash_duration:
+			kill()
+
+func register_shot():
+	flashing = true

@@ -10,6 +10,8 @@ var combo_threshold = 0.5
 var combo = 1
 var score_increase_speed = 1000
 
+var player
+
 # Health variables
 var health_bar
 var displayed_health
@@ -21,11 +23,12 @@ func _ready():
 
 func _enter_tree():
 	var game_manager = get_tree().get_root().get_node("SceneManager/GameManager")
+	player = game_manager.get_node("PlayArea/Player")
 	var _discard = game_manager.connect(
 		"score_change", self, "score_change_callback")
-	_discard = game_manager.get_node("PlayArea/Player").connect(
+	_discard = player.connect(
 		"player_health_change", self, "health_change_callback")
-	health_change_callback(game_manager.get_node("PlayArea/Player").health)
+	health_change_callback(player.health)
 
 func health_change_callback(health):
 	if displayed_health == null:
@@ -46,6 +49,8 @@ func _process(delta):
 	if combo_threshold <= time_since_score and not queued_up_score_to_add == 0:
 		current_score_total += queued_up_score_to_add * combo
 		queued_up_score_to_add = 0
+		if 1 < combo:
+			player.combo_regen()
 	if displayed_score_total < current_score_total:
 		var amount_to_add = 0
 		if score_increase_speed*delta > 0:
