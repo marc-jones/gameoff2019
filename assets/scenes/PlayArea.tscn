@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/images/metal_floor.png" type="Texture" id=1]
+[ext_resource path="res://assets/scripts/Trail.gd" type="Script" id=2]
+[ext_resource path="res://assets/scripts/TrailSprite.gd" type="Script" id=3]
+[ext_resource path="res://assets/scripts/Player.gd" type="Script" id=4]
+[ext_resource path="res://assets/images/spyder_idle/spyder_idle0.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/spyder_idle/spyder_idle1.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/spyder_idle/spyder_idle2.png" type="Texture" id=7]
+[ext_resource path="res://assets/scripts/KillZone.gd" type="Script" id=8]
+[ext_resource path="res://assets/scripts/KillZoneSprite.gd" type="Script" id=9]
+[ext_resource path="res://assets/scripts/DragIndicator.gd" type="Script" id=10]
+
+[sub_resource type="TileSet" id=5]
+0/name = "metal_floor.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 36, 36 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+
+[sub_resource type="CircleShape2D" id=6]
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "idle",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "aiming",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "jumping",
+"speed": 5.0
+} ]
+
+[node name="PlayArea" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 5 )
+cell_size = Vector2( 36, 36 )
+format = 1
+
+[node name="Trail" type="StaticBody2D" parent="."]
+editor/display_folded = true
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="TrailSprite" type="Sprite" parent="Trail"]
+script = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Trail"]
+
+[node name="EnemiesNode" type="Node2D" parent="."]
+
+[node name="Player" type="KinematicBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 155, 229.9 )
+collision_layer = 2
+collision_mask = 5
+script = ExtResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 6 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Player"]
+scale = Vector2( 1.2, 1.2 )
+frames = SubResource( 7 )
+animation = "idle"
+frame = 2
+playing = true
+
+[node name="KillZone" type="Area2D" parent="."]
+editor/display_folded = true
+collision_layer = 0
+collision_mask = 52
+script = ExtResource( 8 )
+
+[node name="Sprite" type="Sprite" parent="KillZone"]
+script = ExtResource( 9 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="KillZone"]
+
+[node name="DragIndicator" type="Sprite" parent="."]
+script = ExtResource( 10 )

@@ -9,12 +9,15 @@ var reflected_bullet = preload("res://assets/images/bullet_reflected.png")
 
 signal enemy_hit
 
+var audio_manager
+
 func _ready():
 	add_to_group('enemy')
 	add_to_group('bullet')
 
 func _enter_tree():
 	var game_manager = get_tree().get_root().get_node("SceneManager/GameManager")
+	audio_manager = get_tree().get_root().get_node("SceneManager/AudioManager")
 	var player = game_manager.get_node("PlayArea/Player")
 	var _discard = game_manager.get_node("PlayArea/KillZone").connect(
 		"body_entered", self, "enter_killzone_callback")
@@ -26,6 +29,7 @@ func _physics_process(delta):
 	var collision = move_and_collide(velocity * delta)
 	if not collision == null:
 		if collision.collider.is_in_group("trail"):
+			audio_manager.play_sound("bounce")
 			convert_to_reflected_bullet()
 			speed += speed_up_amount
 			velocity = velocity.bounce(collision.normal).normalized()*speed

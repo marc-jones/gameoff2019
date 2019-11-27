@@ -9,8 +9,10 @@ var movement_threshold = 2
 
 signal enemy_hit
 
-func _ready():
+func _init():
 	add_to_group('gnat')
+
+func _ready():
 	score = 250
 
 func _enter_tree():
@@ -40,6 +42,7 @@ func _process(delta):
 		$AnimatedSprite.set_flip_h(false)
 	if player_in_range:
 		if not $AnimatedSprite.animation == "hit":
+			audio_manager.play_sound("swing")
 			set_hit_animation()
 			player_in_range_time = 0.0
 		else:

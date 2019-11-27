@@ -47,10 +47,13 @@ func get_enemy_vector(current_level):
 	var offset_positions = return_gnat_offset_positions(number_of_gnats)
 	for idx in range(number_of_gnats):
 		var starting_x_pos = margin_h
-		var remaining_enemies = number_of_gnats - (
-			(current_row - ceil(number_of_gnats/max_enemies_per_row))*max_enemies_per_row)
-		if remaining_enemies < max_enemies_per_row:
-			starting_x_pos = (viewport_dims.x - enemy_spacing*(remaining_enemies-1))/2
+		var enemies_on_this_row = number_of_gnats
+		if max_enemies_per_row < number_of_gnats:
+			enemies_on_this_row = number_of_gnats - (
+				(current_row - ceil(number_of_moths/max_enemies_per_row))*max_enemies_per_row)
+		print(enemies_on_this_row)
+		if enemies_on_this_row < max_enemies_per_row:
+			starting_x_pos = (viewport_dims.x - enemy_spacing*(enemies_on_this_row-1))/2
 		var gnat = GnatTemplate.instance()
 		var offset = offset_positions[idx]
 		gnat.set_target_offset(offset)

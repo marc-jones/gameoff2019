@@ -25,6 +25,8 @@ var enemy_director
 var pathfinding_counter = 0
 var pathfinding_threhsold = 20
 
+var audio_manager
+
 func _ready():
 	# Initialise the button callbacks
 	var menu_button = get_node("HUD/Overlay/OverlayColumns/MenuButtonBackground/MenuButton")
@@ -44,6 +46,7 @@ func _ready():
 	var quit_button_death = get_node("HUD/DeathMenu/QuitToMenu")
 	_discard = quit_button_death.connect("button_up", self, "quit_button_press")
 	# Everything else
+	audio_manager = get_tree().get_root().get_node("SceneManager/AudioManager")
 	screen_height = get_viewport().get_visible_rect().size.y - 40
 	play_area = get_node("PlayArea")
 	player = play_area.get_node("Player")
@@ -171,6 +174,7 @@ func menu_button_press():
 		if get_node("HUD/PauseMenu").visible:
 			continue_button_press()
 		else:
+			audio_manager.play_sound("button_press")
 			pause_mode = PAUSE_MODE_PROCESS
 			$PlayArea.pause_mode = PAUSE_MODE_STOP
 			get_tree().paused = true
@@ -183,27 +187,32 @@ func display_death_screen():
 	get_node("HUD/DeathMenu").visible = true
 	
 func continue_button_press():
+	audio_manager.play_sound("button_press")
 	pause_mode = PAUSE_MODE_INHERIT
 	$PlayArea.pause_mode = PAUSE_MODE_INHERIT
 	get_tree().paused = false
 	get_node("HUD/PauseMenu").visible = false
 	
 func restart_button_press():
+	audio_manager.play_sound("button_press")
 	pause_mode = PAUSE_MODE_INHERIT
 	$PlayArea.pause_mode = PAUSE_MODE_INHERIT
 	get_tree().paused = false
 	get_tree().get_root().get_node("SceneManager").start_new_game()
 	
 func quit_button_press():
+	audio_manager.play_sound("button_press")
 	pause_mode = PAUSE_MODE_INHERIT
 	$PlayArea.pause_mode = PAUSE_MODE_INHERIT
 	get_tree().paused = false
 	get_tree().get_root().get_node("SceneManager").start_menu()
 
 func invert_toggle_callback(pressed):
+	audio_manager.play_sound("button_press")
 	invert_controls = pressed
 
 func share_button_press():
+	audio_manager.play_sound("button_press")
 	var score = get_node("HUD/Overlay").current_score_total
 	var _return = OS.shell_open("http://twitter.com/share?text=I just scored " +
 		str(score) + " playing Itsy Bitsy Spyder&url=" +

@@ -1,0 +1,212 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://assets/images/go/go_0.png" type="Texture" id=1]
+[ext_resource path="res://assets/images/go/go_1.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/go/go_2.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/go/go_3.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/go/go_4.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/go/go_5.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/ui/background.png" type="Texture" id=7]
+[ext_resource path="res://assets/scripts/Overlay.gd" type="Script" id=8]
+[ext_resource path="res://assets/fonts/8bitoperatorplus8regular.tres" type="DynamicFont" id=9]
+[ext_resource path="res://assets/images/ui/healthbar_background.png" type="Texture" id=10]
+[ext_resource path="res://assets/images/ui/healthbar_foreground.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/ui/menu_button/menu_button_normal.png" type="Texture" id=12]
+[ext_resource path="res://assets/images/ui/menu_button/menu_button_pressed.png" type="Texture" id=13]
+[ext_resource path="res://assets/images/ui/menu_button/menu_button_hover.png" type="Texture" id=14]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="HUD" type="Node2D"]
+
+[node name="GoSprite" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 160, 90 )
+frames = SubResource( 1 )
+playing = true
+
+[node name="Overlay" type="TextureRect" parent="."]
+editor/display_folded = true
+margin_right = 320.0
+margin_bottom = 46.0
+texture = ExtResource( 7 )
+script = ExtResource( 8 )
+
+[node name="OverlayColumns" type="HBoxContainer" parent="Overlay"]
+margin_right = 320.0
+margin_bottom = 38.0
+
+[node name="Titles" type="VBoxContainer" parent="Overlay/OverlayColumns"]
+margin_right = 73.0
+margin_bottom = 38.0
+
+[node name="ScoreTitle" type="Label" parent="Overlay/OverlayColumns/Titles"]
+margin_right = 73.0
+margin_bottom = 17.0
+custom_fonts/font = ExtResource( 9 )
+custom_colors/font_color = Color( 0.568627, 0.568627, 0.568627, 1 )
+text = "SCORE"
+
+[node name="HealthTitle" type="Label" parent="Overlay/OverlayColumns/Titles"]
+margin_top = 21.0
+margin_right = 73.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 9 )
+custom_colors/font_color = Color( 0.568627, 0.568627, 0.568627, 1 )
+text = "HEALTH"
+
+[node name="Business" type="VBoxContainer" parent="Overlay/OverlayColumns"]
+margin_left = 77.0
+margin_right = 231.0
+margin_bottom = 38.0
+
+[node name="Number" type="Label" parent="Overlay/OverlayColumns/Business"]
+margin_right = 154.0
+margin_bottom = 17.0
+custom_fonts/font = ExtResource( 9 )
+custom_colors/font_color = Color( 0.568627, 0.568627, 0.568627, 1 )
+text = "0"
+align = 2
+
+[node name="HealthBar" type="TextureRect" parent="Overlay/OverlayColumns/Business"]
+margin_top = 21.0
+margin_right = 154.0
+margin_bottom = 35.0
+texture = ExtResource( 10 )
+
+[node name="HealthGauge" type="TextureProgress" parent="Overlay/OverlayColumns/Business/HealthBar"]
+margin_left = 2.0
+margin_top = 2.27739
+margin_right = 152.0
+margin_bottom = 12.2774
+value = 100.0
+texture_progress = ExtResource( 11 )
+
+[node name="MenuButtonBackground" type="NinePatchRect" parent="Overlay/OverlayColumns"]
+margin_left = 235.0
+margin_right = 320.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+
+[node name="MenuButton" type="TextureButton" parent="Overlay/OverlayColumns/MenuButtonBackground"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -33.0
+margin_top = -16.5
+margin_bottom = 16.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource( 12 )
+texture_pressed = ExtResource( 13 )
+texture_hover = ExtResource( 14 )
+
+[node name="PauseMenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 20.0
+margin_top = 110.0
+margin_right = 300.0
+margin_bottom = 370.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="PauseMenu"]
+margin_top = 16.0
+margin_right = 280.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 9 )
+text = "PAUSED"
+align = 1
+valign = 1
+
+[node name="Continue" type="Button" parent="PauseMenu"]
+margin_top = 53.0
+margin_right = 280.0
+margin_bottom = 83.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 9 )
+shortcut_in_tooltip = false
+text = "CONTINUE"
+
+[node name="Restart" type="Button" parent="PauseMenu"]
+margin_top = 103.0
+margin_right = 280.0
+margin_bottom = 133.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 9 )
+shortcut_in_tooltip = false
+text = "RESTART"
+
+[node name="QuitToMenu" type="Button" parent="PauseMenu"]
+margin_top = 153.0
+margin_right = 280.0
+margin_bottom = 183.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 9 )
+shortcut_in_tooltip = false
+text = "QUIT TO MENU"
+
+[node name="Invert" type="CheckButton" parent="PauseMenu"]
+margin_top = 203.0
+margin_right = 280.0
+margin_bottom = 243.0
+custom_fonts/font = ExtResource( 9 )
+shortcut_in_tooltip = false
+text = "INVERT MOVEMENT"
+
+[node name="DeathMenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 20.0
+margin_top = 140.0
+margin_right = 300.0
+margin_bottom = 343.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="DeathMenu"]
+margin_top = 18.0
+margin_right = 280.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 9 )
+text = "GAME OVER"
+align = 1
+valign = 1
+
+[node name="Restart" type="Button" parent="DeathMenu"]
+margin_top = 55.0
+margin_right = 280.0
+margin_bottom = 85.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 9 )
+shortcut_in_tooltip = false
+text = "RESTART"
+
+[node name="TwitterShare" type="Button" parent="DeathMenu"]
+margin_top = 105.0
+margin_right = 280.0
+margin_bottom = 135.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 9 )
+text = "SHARE ON TWITTER"
+
+[node name="QuitToMenu" type="Button" parent="DeathMenu"]
+margin_top = 155.0
+margin_right = 280.0
+margin_bottom = 185.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 9 )
+shortcut_in_tooltip = false
+text = "QUIT TO MENU"

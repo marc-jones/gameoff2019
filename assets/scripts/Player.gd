@@ -32,6 +32,7 @@ var movement_direction : Vector2
 var deceleration_rate = 1.5
 
 var trail
+var audio_manager
 
 func _ready():
 	add_to_group("player")
@@ -39,6 +40,7 @@ func _ready():
 
 func _enter_tree():
 	trail = get_node("../Trail")
+	audio_manager = get_tree().get_root().get_node("SceneManager/AudioManager")
 	health_change(100)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -101,11 +103,13 @@ func teleport(point):
 	current_target = point
 
 func move_to(point):
+	audio_manager.play_sound("jump")
 	movement_direction = position.direction_to(point)
 	current_target = point
 
 func register_hit():
 #	get_parent().get_parent().initialise_slowdown(0.1)
+	audio_manager.play_sound("hit")
 	incapacitate(0.1)
 	health_change(-20)
 	flashing = true

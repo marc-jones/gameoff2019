@@ -14,8 +14,10 @@ var max_range = 300
 
 var BulletTemplate = load("res://assets/scenes/Bullet.tscn")
 
-func _ready():
+func _init():
 	add_to_group('moth')
+
+func _ready():
 	score = 400
 
 func _enter_tree():
@@ -58,6 +60,7 @@ func shoot():
 	bullet.position = position
 	bullet.set_dir(target - position)
 	get_parent().add_child(bullet)
+	audio_manager.play_sound("gunshot")
 
 func animation_finished_callback():
 	if $AnimatedSprite.animation == "shoot":

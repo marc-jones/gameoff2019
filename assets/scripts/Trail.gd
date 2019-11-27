@@ -1,7 +1,7 @@
 extends StaticBody2D
 
 var point_list = PoolVector2Array()
-var max_length = 500.0
+var max_length = 550.0
 
 var projection_point : Vector2
 

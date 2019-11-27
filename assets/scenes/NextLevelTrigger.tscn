@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 160, 20 )
+
+[node name="NextLevelTrigger" type="Area2D"]
+editor/display_folded = true
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 160, 0 )
+shape = SubResource( 1 )

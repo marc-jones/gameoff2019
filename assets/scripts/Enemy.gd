@@ -13,6 +13,8 @@ var flash_duration = 0.5
 var current_flash_duration = 0
 var flashing = false
 
+var audio_manager
+
 func _ready():
 	add_to_group('enemy')
 	set_walk_animation()
@@ -23,6 +25,7 @@ func _process(delta):
 func _enter_tree():
 	var game_manager = get_tree().get_root().get_node("SceneManager/GameManager")
 	var player = game_manager.get_node("PlayArea/Player")
+	audio_manager = get_tree().get_root().get_node("SceneManager/AudioManager")
 	var _discard = player.connect("moved", self, "update_target")
 	_discard = game_manager.get_node("PlayArea/KillZone").connect(
 		"body_entered", self, "enter_killzone_callback")
@@ -67,4 +70,5 @@ func manage_flashing(delta):
 			kill()
 
 func register_shot():
+	audio_manager.play_sound("hit")
 	flashing = true

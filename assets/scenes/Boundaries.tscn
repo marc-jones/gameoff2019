@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 260 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 180, 10 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 180, 10 )
+
+[node name="Boundaries" type="StaticBody2D"]
+editor/display_folded = true
+
+[node name="LeftWall" type="CollisionShape2D" parent="."]
+position = Vector2( -10, 240 )
+shape = SubResource( 2 )
+
+[node name="RightWall" type="CollisionShape2D" parent="."]
+position = Vector2( 330, 240 )
+shape = SubResource( 2 )
+
+[node name="BottomWall" type="CollisionShape2D" parent="."]
+position = Vector2( 160, 490 )
+shape = SubResource( 3 )
+
+[node name="TopWall" type="CollisionShape2D" parent="."]
+position = Vector2( 160, 33.2774 )
+shape = SubResource( 4 )

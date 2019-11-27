@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/septahelix_lub_dub.wav-62a19241d666c36b19aa58f75d71039c.sample"
+
+[deps]
+
+source_file="res://assets/sounds/septahelix_lub_dub.wav"
+dest_files=[ "res://.import/septahelix_lub_dub.wav-62a19241d666c36b19aa58f75d71039c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=true
+compress/mode=0
