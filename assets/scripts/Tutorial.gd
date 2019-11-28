@@ -133,8 +133,6 @@ func _ready():
 	var _discard = menu_button.connect("button_down", self, "menu_button_press")
 	var continue_button = get_node("HUD/PauseMenu/Continue")
 	_discard = continue_button.connect("button_up", self, "continue_button_press")
-	var restart_button = get_node("HUD/PauseMenu/Restart")
-	_discard = restart_button.connect("button_up", self, "restart_button_press")
 	var quit_button = get_node("HUD/PauseMenu/QuitToMenu")
 	_discard = quit_button.connect("button_up", self, "quit_button_press")
 	var invert_toggle = get_node("HUD/PauseMenu/Invert")

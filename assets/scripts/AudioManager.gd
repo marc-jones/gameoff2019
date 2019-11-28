@@ -21,6 +21,7 @@ func _ready():
 		var stream  = load(sound_library[key][0])
 		sound_node.set_stream(stream)
 		sound_node.volume_db = sound_library[key][1]
+		sound_node.set_bus("FX")
 		add_child(sound_node)
 		stream_library[key] = sound_node
 	$Music.volume_db = music_volume

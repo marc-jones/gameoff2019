@@ -51,7 +51,6 @@ func get_enemy_vector(current_level):
 		if max_enemies_per_row < number_of_gnats:
 			enemies_on_this_row = number_of_gnats - (
 				(current_row - ceil(number_of_moths/max_enemies_per_row))*max_enemies_per_row)
-		print(enemies_on_this_row)
 		if enemies_on_this_row < max_enemies_per_row:
 			starting_x_pos = (viewport_dims.x - enemy_spacing*(enemies_on_this_row-1))/2
 		var gnat = GnatTemplate.instance()
