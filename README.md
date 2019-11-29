@@ -2,4 +2,4 @@
 
 [Play the game here!](https://manicmoleman.itch.io/itsy-bitsy-spyder)
 
-This is my entry for the 
+This is my entry for the GitHub Game Jam 2019
